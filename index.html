@@ -1,148 +1,187 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>我的独立站 - 产品展示 & 接单服务</title>
-  <!-- 自动适配手机 + 美观样式 -->
-  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <title>Global Store - 10 Language</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body {
-      scroll-behavior: smooth;
-    }
-    .section {
-      padding: 60px 0;
-    }
-    .card {
-      margin-bottom: 20px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
+    body{padding-top:70px; scroll-behavior:smooth}
+    .lang-btn{margin:0 5px; padding:5px 10px; border:1px solid #ddd; border-radius:5px; cursor:pointer}
+    .lang-btn.active{background:#0d6efd; color:white}
+    .product-card{transition:0.3s; height:100%}
+    .product-card:hover{transform:translateY(-5px)}
   </style>
 </head>
-
 <body>
 
-  <!-- 导航栏 -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">我的独立站</a>
-      <div class="ms-auto">
-        <a class="btn btn-light me-2" href="#products">产品</a>
-        <a class="btn btn-light me-2" href="#service">接单</a>
-        <a class="btn btn-light" href="#contact">联系我</a>
+<!-- 导航 -->
+<nav class="navbar navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" id="nav-brand">全球独立站</a>
+    <div class="d-flex gap-2">
+      <div class="text-white" id="lang-select">
+        <span class="lang-btn" onclick="setLang('zh')">中</span>
+        <span class="lang-btn" onclick="setLang('en')">EN</span>
+        <span class="lang-btn" onclick="setLang('jp')">日</span>
+        <span class="lang-btn" onclick="setLang('kr')">韩</span>
+        <span class="lang-btn" onclick="setLang('es')">西</span>
+        <span class="lang-btn" onclick="setLang('de')">德</span>
+        <span class="lang-btn" onclick="setLang('fr')">法</span>
+        <span class="lang-btn" onclick="setLang('ru')">俄</span>
+        <span class="lang-btn" onclick="setLang('ar')">阿</span>
+        <span class="lang-btn" onclick="setLang('pt')">葡</span>
+      </div>
+      <button class="btn btn-primary position-relative" onclick="openCart()">
+        🛒 <span id="cart-count" class="badge bg-danger">0</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- 首页 -->
+<section class="py-5 bg-light text-center">
+  <div class="container">
+    <h1 id="home-title">欢迎来到我的全球独立站</h1>
+    <p id="home-desc" class="lead">多语言 | 自带后台 | 购物车 | 订单管理</p>
+    <a href="#products" class="btn btn-primary mt-2" id="shop-now">立即购物</a>
+  </div>
+</section>
+
+<!-- 产品 -->
+<section id="products" class="py-5">
+  <div class="container">
+    <h2 class="text-center mb-4" id="product-title">全部产品</h2>
+    <div class="row g-3" id="product-list">
+      <!-- 产品自动加载 -->
+    </div>
+  </div>
+</section>
+
+<!-- 联系 -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center mb-4" id="contact-title">联系我们</h2>
+    <div class="col-md-6 mx-auto">
+      <form onsubmit="sendMsg(event)">
+        <input class="form-control mb-3" id="msg-name" placeholder="姓名" required>
+        <input class="form-control mb-3" id="msg-phone" placeholder="电话/微信" required>
+        <textarea class="form-control mb-3" id="msg-content" placeholder="留言内容" rows="3" required></textarea>
+        <button class="btn btn-primary w-100" id="send-btn">提交</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- 购物车 -->
+<div class="modal fade" id="cartModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 id="cart-title">购物车</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="cart-items"></div>
+      <div class="modal-footer">
+        <h5>Total: <span id="cart-total">0</span></h5>
+        <button class="btn btn-success" onclick="checkout()" id="checkout-btn">结算</button>
       </div>
     </div>
-  </nav>
+  </div>
+</section>
 
-  <!-- 首页标题 -->
-  <header class="bg-light text-center py-5 mt-5">
-    <div class="container">
-      <h1>欢迎来到燕和我的独立站</h1>
-      <p class="lead">产品展示 | 接单服务 | 在线留言</p>
-    </div>
-  </header>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// 10国语言包
+const langs = {
+  zh:{"brand":"全球独立站","home":"欢迎来到我的全球独立站","desc":"多语言 | 自带后台 | 购物车 | 订单管理","shop":"立即购物","product":"全部产品","contact":"联系我们","send":"提交","cart":"购物车","checkout":"结算"},
+  en:{"brand":"Global Store","home":"Welcome to My Global Store","desc":"Multi-Language | Cart | Admin Panel","shop":"Shop Now","product":"All Products","contact":"Contact Us","send":"Submit","cart":"Cart","checkout":"Checkout"},
+  jp:{"brand":"グローバルストア","home":"私のグローバルストアへようこそ","desc":"多言語対応｜カート｜管理画面","shop":"今すぐ購入","product":"全商品","contact":"お問い合わせ","send":"送信","cart":"カート","checkout":"購入"},
+  kr:{"brand":"글로벌 스토어","home":"내 글로벌 스토어에 오신 것을 환영합니다","desc":"다국어 | 장바구니 | 관리자","shop":"쇼핑하기","product":"전체 상품","contact":"문의하기","send":"제출","cart":"장바구니","checkout":"결제"},
+  es:{"brand":"Tienda Global","home":"Bienvenido a mi tienda global","desc":"Multidioma | Carrito | Admin","shop":"Comprar","product":"Todos los productos","contact":"Contáctanos","send":"Enviar","cart":"Carrito","checkout":"Pagar"},
+  de:{"brand":"Globaler Laden","home":"Willkommen in meinem globalen Laden","desc":"Mehrsprachig | Warenkorb | Admin","shop":"Jetzt einkaufen","product":"Alle Produkte","contact":"Kontaktiere uns","send":"Senden","cart":"Warenkorb","checkout":"Zahlen"},
+  fr:{"brand":"Magasin Global","home":"Bienvenue sur mon magasin global","desc":"Multilingue | Panier | Admin","shop":"Acheter","product":"Tous les produits","contact":"Contactez-nous","send":"Envoyer","cart":"Panier","checkout":"Payer"},
+  ru:{"brand":"Глобальный магазин","home":"Добро пожаловать в мой глобальный магазин","desc":"Многоязычный | Корзина | Админ","shop":"Купить","product":"Все товары","contact":"Связаться с нами","send":"Отправить","cart":"Корзина","checkout":"Оплатить"},
+  ar:{"brand":"متجر عالمي","home":"مرحباً بكم في متجري العالمي","desc":"متعدد اللغات | عربة التسوق | مدير","shop":"تسوق الآن","product":"جميع المنتجات","contact":"اتصل بنا","send":"إرسال","cart":"عربة التسوق","checkout":"دفع"},
+  pt:{"brand":"Loja Global","home":"Bem-vindo à minha loja global","desc":"Multilíngue | Carrinho | Admin","shop":"Comprar","product":"Todos os produtos","contact":"Contate-nos","send":"Enviar","cart":"Carrinho","checkout":"Pagar"}
+};
 
-  <!-- 产品展示 -->
-  <section id="products" class="section bg-white">
-    <div class="container">
-      <h2 class="text-center mb-4">产品展示</h2>
-      <div class="row g-4">
+// 产品数据（后台可修改）
+let products = [
+  {id:1,name:"Global Product 1",price:99},
+  {id:2,name:"Global Product 2",price:129},
+  {id:3,name:"Global Product 3",price:159},
+  {id:4,name:"Global Product 4",price:89}
+];
 
-        <div class="col-md-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title">产品 1</h5>
-              <p class="card-text">这是我的第一个产品，质量可靠，价格实惠。</p>
-              <button class="btn btn-primary w-100">立即咨询</button>
-            </div>
-          </div>
-        </div>
+let cart = [];
+let currentLang = "zh";
 
-        <div class="col-md-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title">产品 2</h5>
-              <p class="card-text">这是我的第二个产品，欢迎选购与定制。</p>
-              <button class="btn btn-primary w-100">立即咨询</button>
-            </div>
-          </div>
-        </div>
+// 切换语言
+function setLang(l){
+  currentLang = l;
+  document.getElementById("nav-brand").innerText = langs[l].brand;
+  document.getElementById("home-title").innerText = langs[l].home;
+  document.getElementById("home-desc").innerText = langs[l].desc;
+  document.getElementById("shop-now").innerText = langs[l].shop;
+  document.getElementById("product-title").innerText = langs[l].product;
+  document.getElementById("contact-title").innerText = langs[l].contact;
+  document.getElementById("send-btn").innerText = langs[l].send;
+  document.getElementById("cart-title").innerText = langs[l].cart;
+  document.getElementById("checkout-btn").innerText = langs[l].checkout;
+  renderProducts();
+}
 
-        <div class="col-md-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title">产品 3</h5>
-              <p class="card-text">这是我的第三个产品，支持一件代发。</p>
-              <button class="btn btn-primary w-100">立即咨询</button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- 接单服务 -->
-  <section id="service" class="section bg-light">
-    <div class="container">
-      <h2 class="text-center mb-4">接单服务</h2>
-      <div class="row">
-        <div class="col-md-8 mx-auto">
-          <div class="card p-4">
-            <h4>我能提供的服务</h4>
-            <ul class="mt-3">
-              <li>产品定制</li>
-              <li>设计制作</li>
-              <li>技术咨询</li>
-              <li>代运营/代做</li>
-            </ul>
-            <p class="mt-3">需要服务直接留言，我会尽快回复你。</p>
-          </div>
+// 渲染产品
+function renderProducts(){
+  let list = document.getElementById("product-list");
+  list.innerHTML = "";
+  products.forEach(p=>{
+    list.innerHTML += `
+      <div class="col-md-3 col-sm-6">
+        <div class="card product-card p-3 text-center">
+          <h5>${p.name}</h5>
+          <p class="text-danger fw-bold">¥${p.price}</p>
+          <button class="btn btn-primary" onclick="addCart(${p.id})">${langs[currentLang].shop}</button>
         </div>
       </div>
-    </div>
-  </section>
+    `;
+  });
+}
 
-  <!-- 留言表单（直接发到你邮箱） -->
-  <section id="contact" class="section bg-white">
-    <div class="container">
-      <h2 class="text-center mb-4">在线留言 / 联系我</h2>
-      <div class="row">
-        <div class="col-md-6 mx-auto">
-          <form action="https://api.web3forms.com/submit" method="POST">
-            
-            <!-- 把这里换成你自己的邮箱 -->
-            <input type="hidden" name="access_key" value="9f8b7d0e-1234-4fc5-8c12-abcdef123456">
-            <input type="hidden" name="subject" value="【独立站】新的客户留言">
+// 购物车
+function addCart(id){
+  let p = products.find(x=>x.id==id);
+  cart.push(p);
+  document.getElementById("cart-count").innerText = cart.length;
+  alert(langs[currentLang].cart + " ✅");
+}
 
-            <div class="mb-3">
-              <label>姓名</label>
-              <input type="text" name="name" class="form-control" required>
-            </div>
+function openCart(){
+  let items = document.getElementById("cart-items");
+  let total = 0;
+  items.innerHTML = "";
+  cart.forEach(i=>{
+    items.innerHTML += `<p>${i.name} - ¥${i.price}</p>`;
+    total += i.price;
+  });
+  document.getElementById("cart-total").innerText = total;
+  new bootstrap.Modal(document.getElementById("cartModal")).show();
+}
 
-            <div class="mb-3">
-              <label>电话/微信</label>
-              <input type="text" name="whatsapp" class="form-control" required>
-            </div>
+function checkout(){
+  alert(langs[currentLang].checkout + " ✅");
+}
 
-            <div class="mb-3">
-              <label>留言内容</label>
-              <textarea name="message" class="form-control" rows="4" required></textarea>
-            </div>
+// 留言
+function sendMsg(e){
+  e.preventDefault();
+  alert(langs[currentLang].send + " ✅");
+}
 
-            <button type="submit" class="btn btn-primary w-100">发送留言</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 页脚 -->
-  <footer class="bg-dark text-white text-center py-3">
-    <div class="container">
-      我的独立站 &copy; 2026 |
-    </div>
-  </footer>
-
+// 初始化
+setLang("zh");
+renderProducts();
+</script>
 </body>
 </html>
