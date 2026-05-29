@@ -1,11 +1,148 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <title>我的第一个独立站</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的独立站 - 产品展示 & 接单服务</title>
+  <!-- 自动适配手机 + 美观样式 -->
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <style>
+    body {
+      scroll-behavior: smooth;
+    }
+    .section {
+      padding: 60px 0;
+    }
+    .card {
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+  </style>
 </head>
+
 <body>
-    <h1>🎉 恭喜！网站上线成功！</h1>
-    <p>这是我自己0成本做的独立站，不依托任何平台。希望我和海燕能在这个赛道跑得更远。</p>
+
+  <!-- 导航栏 -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">我的独立站</a>
+      <div class="ms-auto">
+        <a class="btn btn-light me-2" href="#products">产品</a>
+        <a class="btn btn-light me-2" href="#service">接单</a>
+        <a class="btn btn-light" href="#contact">联系我</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 首页标题 -->
+  <header class="bg-light text-center py-5 mt-5">
+    <div class="container">
+      <h1>欢迎来到我的独立站</h1>
+      <p class="lead">产品展示 | 接单服务 | 在线留言</p>
+    </div>
+  </header>
+
+  <!-- 产品展示 -->
+  <section id="products" class="section bg-white">
+    <div class="container">
+      <h2 class="text-center mb-4">产品展示</h2>
+      <div class="row g-4">
+
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">产品 1</h5>
+              <p class="card-text">这是我的第一个产品，质量可靠，价格实惠。</p>
+              <button class="btn btn-primary w-100">立即咨询</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">产品 2</h5>
+              <p class="card-text">这是我的第二个产品，欢迎选购与定制。</p>
+              <button class="btn btn-primary w-100">立即咨询</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">产品 3</h5>
+              <p class="card-text">这是我的第三个产品，支持一件代发。</p>
+              <button class="btn btn-primary w-100">立即咨询</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 接单服务 -->
+  <section id="service" class="section bg-light">
+    <div class="container">
+      <h2 class="text-center mb-4">接单服务</h2>
+      <div class="row">
+        <div class="col-md-8 mx-auto">
+          <div class="card p-4">
+            <h4>我能提供的服务</h4>
+            <ul class="mt-3">
+              <li>产品定制</li>
+              <li>设计制作</li>
+              <li>技术咨询</li>
+              <li>代运营/代做</li>
+            </ul>
+            <p class="mt-3">需要服务直接留言，我会尽快回复你。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 留言表单（直接发到你邮箱） -->
+  <section id="contact" class="section bg-white">
+    <div class="container">
+      <h2 class="text-center mb-4">在线留言 / 联系我</h2>
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+          <form action="https://api.web3forms.com/submit" method="POST">
+            
+            <!-- 把这里换成你自己的邮箱 -->
+            <input type="hidden" name="access_key" value="9f8b7d0e-1234-4fc5-8c12-abcdef123456">
+            <input type="hidden" name="subject" value="【独立站】新的客户留言">
+
+            <div class="mb-3">
+              <label>姓名</label>
+              <input type="text" name="name" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+              <label>电话/微信</label>
+              <input type="text" name="whatsapp" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+              <label>留言内容</label>
+              <textarea name="message" class="form-control" rows="4" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">发送留言</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="bg-dark text-white text-center py-3">
+    <div class="container">
+      我的独立站 &copy; 2026 | 纯代码开发 0 成本
+    </div>
+  </footer>
+
 </body>
 </html>
